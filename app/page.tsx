@@ -29,7 +29,7 @@ export default function Home() {
               <div
                 className="max-w-xs md:max-w-md rounded-lg p-3 shadow"
                 style={{
-                  backgroundColor: message.user === "bob" ? '#8794aa' : '#53b0fd',
+                  backgroundColor: message.user === "bob" ? '#4a5264' : '#2d7bc5',
                 }}
               >
                 <div className="flex items-center gap-2 mb-1">
