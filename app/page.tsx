@@ -11,12 +11,12 @@ export default function Home() {
   ];
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-4">
-      <div className="w-full max-w-2xl bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden">
+    <div className="flex min-h-screen items-center justify-center p-4" style={{ backgroundColor: '#0b0d12' }}>
+      <div className="w-full max-w-2xl rounded-lg shadow-xl overflow-hidden" style={{ backgroundColor: '#0b0d12' }}>
         {/* Chat Header */}
-        <div className="bg-indigo-600 dark:bg-indigo-800 text-white p-4">
-          <h1 className="text-xl font-semibold">Chat Room</h1>
-          <p className="text-sm text-indigo-200">Bob and Fred</p>
+        <div className="p-4" style={{ backgroundColor: '#53b0fd' }}>
+          <h1 className="text-xl font-semibold" style={{ color: '#ffffff' }}>Chat Room</h1>
+          <p className="text-sm" style={{ color: '#ffffff', opacity: 0.9 }}>Bob and Fred</p>
         </div>
 
         {/* Chat Messages */}
@@ -27,27 +27,20 @@ export default function Home() {
               className={`flex ${message.user === "bob" ? "justify-start" : "justify-end"}`}
             >
               <div
-                className={`max-w-xs md:max-w-md ${
-                  message.user === "bob"
-                    ? "bg-gray-200 dark:bg-gray-700"
-                    : "bg-indigo-500 dark:bg-indigo-600 text-white"
-                } rounded-lg p-3 shadow`}
+                className="max-w-xs md:max-w-md rounded-lg p-3 shadow"
+                style={{
+                  backgroundColor: message.user === "bob" ? '#8794aa' : '#53b0fd',
+                }}
               >
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="font-semibold text-sm capitalize">
+                  <span className="font-semibold text-sm capitalize" style={{ color: '#ffffff' }}>
                     {message.user}
                   </span>
-                  <span
-                    className={`text-xs ${
-                      message.user === "bob"
-                        ? "text-gray-500 dark:text-gray-400"
-                        : "text-indigo-100"
-                    }`}
-                  >
+                  <span className="text-xs" style={{ color: '#ffffff', opacity: 0.7 }}>
                     {message.timestamp}
                   </span>
                 </div>
-                <p className={message.user === "bob" ? "text-gray-800 dark:text-gray-100" : ""}>
+                <p style={{ color: '#ffffff' }}>
                   {message.text}
                 </p>
               </div>
@@ -56,17 +49,26 @@ export default function Home() {
         </div>
 
         {/* Chat Input (Disabled/Placeholder) */}
-        <div className="border-t border-gray-200 dark:border-gray-700 p-4">
+        <div className="p-4" style={{ borderTop: '1px solid #8794aa' }}>
           <div className="flex gap-2">
             <input
               type="text"
               placeholder="Messages are hardcoded (read-only)"
               disabled
-              className="flex-1 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 px-4 py-2 text-gray-500 dark:text-gray-400 cursor-not-allowed"
+              className="flex-1 rounded-lg px-4 py-2 cursor-not-allowed"
+              style={{
+                backgroundColor: '#0b0d12',
+                border: '1px solid #8794aa',
+                color: '#8794aa',
+              }}
             />
             <button
               disabled
-              className="bg-indigo-600 text-white px-6 py-2 rounded-lg opacity-50 cursor-not-allowed"
+              className="px-6 py-2 rounded-lg opacity-50 cursor-not-allowed"
+              style={{
+                backgroundColor: '#53b0fd',
+                color: '#ffffff',
+              }}
             >
               Send
             </button>
