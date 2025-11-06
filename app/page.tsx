@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 
 interface Message {
   id: number;
@@ -17,12 +19,18 @@ export default function Home() {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await fetch('http://localhost:3000/messages');
-        if (!response.ok) {
-          throw new Error('Failed to fetch messages');
-        }
-        const data = await response.json();
-        setMessages(data);
+        const messagesQuery = query(
+          collection(db, 'messages'),
+          orderBy('id', 'asc')
+        );
+        const querySnapshot = await getDocs(messagesQuery);
+        const messagesData = querySnapshot.docs.map((doc) => ({
+          id: doc.data().id,
+          user: doc.data().user,
+          text: doc.data().text,
+          timestamp: doc.data().timestamp,
+        })) as Message[];
+        setMessages(messagesData);
         setLoading(false);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
