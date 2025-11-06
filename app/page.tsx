@@ -16,6 +16,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const lastTimestampRef = useRef<string | null>(null);
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -43,8 +44,17 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    // Scroll to bottom when messages change
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    // Only scroll when a new message with a higher timestamp is received
+    if (messages.length > 0) {
+      const latestMessage = messages[messages.length - 1];
+      const latestTimestamp = latestMessage.timestamp;
+
+      // Scroll only if this is a new message (higher timestamp than previous)
+      if (lastTimestampRef.current === null || latestTimestamp > lastTimestampRef.current) {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        lastTimestampRef.current = latestTimestamp;
+      }
+    }
   }, [messages]);
 
   return (
