@@ -1,14 +1,37 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+
+interface Message {
+  id: number;
+  user: string;
+  text: string;
+  timestamp: string;
+}
+
 export default function Home() {
-  const messages = [
-    { id: 1, user: "bob", text: "Hey Fred! How's it going?", timestamp: "10:30 AM" },
-    { id: 2, user: "fred", text: "Hey Bob! Pretty good, just working on some code. You?", timestamp: "10:31 AM" },
-    { id: 3, user: "bob", text: "Same here! I'm trying to figure out this Next.js setup.", timestamp: "10:32 AM" },
-    { id: 4, user: "fred", text: "Oh nice! Next.js is awesome. What are you building?", timestamp: "10:33 AM" },
-    { id: 5, user: "bob", text: "A chat application, actually! This is just a demo though.", timestamp: "10:34 AM" },
-    { id: 6, user: "fred", text: "That's cool! Make sure to add some good styling with Tailwind.", timestamp: "10:35 AM" },
-    { id: 7, user: "bob", text: "Definitely! The color scheme looks pretty good already.", timestamp: "10:36 AM" },
-    { id: 8, user: "fred", text: "Agreed! Keep up the good work! 👍", timestamp: "10:37 AM" },
-  ];
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/messages');
+        if (!response.ok) {
+          throw new Error('Failed to fetch messages');
+        }
+        const data = await response.json();
+        setMessages(data);
+        setLoading(false);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred');
+        setLoading(false);
+      }
+    };
+
+    fetchMessages();
+  }, []);
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4" style={{ backgroundColor: '#0b0d12' }}>
@@ -21,7 +44,17 @@ export default function Home() {
 
         {/* Chat Messages */}
         <div className="h-[600px] overflow-y-auto p-4 space-y-4">
-          {messages.map((message) => (
+          {loading && (
+            <div className="flex items-center justify-center h-full">
+              <p style={{ color: '#8794aa' }}>Loading messages...</p>
+            </div>
+          )}
+          {error && (
+            <div className="flex items-center justify-center h-full">
+              <p style={{ color: '#ff6b6b' }}>Error: {error}</p>
+            </div>
+          )}
+          {!loading && !error && messages.map((message) => (
             <div
               key={message.id}
               className={`flex ${message.user === "bob" ? "justify-start" : "justify-end"}`}
@@ -53,7 +86,7 @@ export default function Home() {
           <div className="flex gap-2">
             <input
               type="text"
-              placeholder="Messages are hardcoded (read-only)"
+              placeholder="Type a message (read-only demo)"
               disabled
               className="flex-1 rounded-lg px-4 py-2 cursor-not-allowed"
               style={{
